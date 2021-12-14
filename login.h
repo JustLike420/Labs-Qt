@@ -3,6 +3,9 @@
 
 #include <QWidget>
 
+#include <QtSql>
+#include <QMessageBox>
+
 namespace Ui {
 class login;
 }
@@ -15,8 +18,14 @@ public:
     explicit login(QWidget *parent = nullptr);
     ~login();
 
+    QMessageBox* mes;
+
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::login *ui;
+    QSqlDatabase db;
 };
 
 #endif // LOGIN_H
