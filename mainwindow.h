@@ -34,6 +34,12 @@ private slots:
 
     void obr_ref_tab();
 
+    void on_tableView_clicked(const QModelIndex &index);
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
 //    QSqlTableModel* model;
