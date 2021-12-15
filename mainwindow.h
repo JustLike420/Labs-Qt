@@ -2,7 +2,13 @@
 #define MAINWINDOW_H
 #include "login.h"
 #include "ui_login.h"
+#include "addrecord.h"
+#include "ui_addrecord.h"
+
 #include <QMainWindow>
+
+//#include <QSqlTableModel>
+#include <QSqlQueryModel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,11 +23,20 @@ public:
     ~MainWindow();
 
     login* logwin;
+    addrecord* dopzap;
 
 private slots:
     void on_action_triggered();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void obr_ref_tab();
+
 private:
     Ui::MainWindow *ui;
+//    QSqlTableModel* model;
+    QSqlQueryModel* model;
 };
 #endif // MAINWINDOW_H

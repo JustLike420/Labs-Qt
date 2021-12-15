@@ -7,6 +7,10 @@ login::login(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->lineEdit->setText("DESKTOP-SK24H40\\SQLEXPRESS");
+    ui->lineEdit_2->setText("qtkur");
+    ui->lineEdit_3->setText("Vladimir");
+
     ui->lineEdit_4->setEchoMode(QLineEdit::Password);
 
     mes = new QMessageBox();
