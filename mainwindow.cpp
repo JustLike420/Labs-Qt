@@ -6,6 +6,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(CustomMenuReq(QPoint)));
+    fl = 0;
 }
 
 MainWindow::~MainWindow()
@@ -30,7 +34,7 @@ void MainWindow::on_pushButton_clicked()
 //    model = new QSqlTableModel();
 //    model->setTable("primer");
 //    model->select();
-
+    fl = 1;
     model->setHeaderData(0, Qt::Horizontal,"Номер п/п");
     model->setHeaderData(1, Qt::Horizontal,"Название товара");
     model->setHeaderData(2, Qt::Horizontal, "Производитель");
@@ -52,11 +56,11 @@ void MainWindow::obr_ref_tab(){
     on_pushButton_clicked();
 }
 
-
+// выбирается строка которую выбрал пользователь, но только первый столбец 59
 void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
     int temp_nom;
-    temp_nom = ui->tableView->model()->data(ui->tableView->model()->index(index.row(), 0)).toInt(); // выбирается строка которую выбрал пользователь, но только первый столбец
+    temp_nom = ui->tableView->model()->data(ui->tableView->model()->index(index.row(), 0)).toInt();
     ui->lineEdit->setText(QString::number(temp_nom));
 
     QSqlQuery* query = new QSqlQuery();
@@ -79,8 +83,9 @@ void MainWindow::on_pushButton_3_clicked()
     query->bindValue(1, ui->lineEdit_3->text());
     query->bindValue(2, ui->lineEdit->text());
 
-    query->exec();
-    on_pushButton_clicked();
+    if (query->exec()){
+        on_pushButton_clicked();
+    }
 }
 
 
@@ -90,7 +95,46 @@ void MainWindow::on_pushButton_4_clicked()
     query->prepare("DELETE FROM primer1 WHERE id=?");
     query->bindValue(0, ui->lineEdit->text());
 
-    query->exec();
-    on_pushButton_clicked();
+    if (query->exec()){
+        on_pushButton_clicked();
+    }
 }
 
+void MainWindow::CustomMenuReq(QPoint pos)
+{
+ if (fl==1){
+     QModelIndex index = ui->tableView->indexAt(pos);
+     globid = ui->tableView->model()->data(ui->tableView->model()->index(index.row(), 0)).toInt();
+     QMenu* menu = new QMenu(this);
+     QAction* izm = new QAction("Изменить", this);
+     connect(izm, SIGNAL(triggered()), this, SLOT(izm_zap()));
+
+     QAction* ud = new QAction("Удалить", this);
+     connect(ud, SIGNAL(triggered()), this, SLOT(del_zap()));
+
+     menu->addAction(izm);
+     menu->addAction(ud);
+     menu->popup(ui->tableView->viewport()->mapToGlobal(pos));
+ }
+}
+
+void MainWindow::del_zap()
+{
+    QSqlQuery* query = new QSqlQuery();
+    query->prepare("DELETE FROM primer1 WHERE id=?");
+    query->bindValue(0, globid);
+
+    if (query->exec()){
+        on_pushButton_clicked();
+    }
+}
+
+void MainWindow::izm_zap()
+{
+    izm = new izmenenie();
+    connect(this, SIGNAL(sendID(int)), izm, SLOT(obr_sendID(int)));
+    emit sendID(globid);
+    izm->show();
+    disconnect(this, SIGNAL(sendID(int)), izm, SLOT(obr_sendID(int)));
+
+}

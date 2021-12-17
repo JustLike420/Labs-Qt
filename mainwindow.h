@@ -4,6 +4,8 @@
 #include "ui_login.h"
 #include "addrecord.h"
 #include "ui_addrecord.h"
+#include "izmenenie.h"
+#include "ui_izmenenie.h"+
 
 #include <QMainWindow>
 
@@ -24,6 +26,10 @@ public:
 
     login* logwin;
     addrecord* dopzap;
+    izmenenie* izm;
+
+    int globid;
+    int fl; // флаг изменяется после нажатия пользователя
 
 private slots:
     void on_action_triggered();
@@ -39,7 +45,14 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_4_clicked();
+    // наведение на таблицу
+    void CustomMenuReq(QPoint);
 
+    void del_zap();
+
+    void izm_zap();
+signals:
+    void sendID(int);
 private:
     Ui::MainWindow *ui;
 //    QSqlTableModel* model;

@@ -10,17 +10,20 @@ CONFIG += c++11
 
 SOURCES += \
     addrecord.cpp \
+    izmenenie.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     addrecord.h \
+    izmenenie.h \
     login.h \
     mainwindow.h
 
 FORMS += \
     addrecord.ui \
+    izmenenie.ui \
     login.ui \
     mainwindow.ui
 
